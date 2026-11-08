@@ -1,0 +1,247 @@
+---
+title: "Exercise 2"
+output: html_document
+date: "2026-09-30"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+a <- 17
+b <- 5
+
+a + b
+a - b
+a * b
+a / b
+```
+```{r}
+z <- (a %% b)
+x <- (a %/% b)
+print(z)
+print (x)
+```
+```{r}
+power <- (2 ^ 10)
+print (power)
+```
+```{r}
+quotient <- (17/5)
+Rmain <- (17 %% 5)
+div <- (17 %/% 5)
+
+print(quotient)
+print(Rmain)
+print(div)
+```
+
+my answer to 10 %% 3 is 3 and to 10 %/% is also 3
+```{r}
+div <- (10 %% 3)
+cdiv <- (10 %/% 3)
+
+print(div)
+print (cdiv)
+```
+x <- 42
+y <- 42L        # the L suffix forces an integer
+z <- "42"
+w <- TRUE
+v <- 3 + 2i     # complex number
+
+# TODO: Use typeof() to check the type of each of x, y, z, w, v
+
+```{r}
+x <- 42
+y <- 42L        # the L suffix forces an integer
+z <- "42"
+w <- TRUE
+v <- 3 + 2i     # complex number
+
+# TODO: Use typeof() to check the type of each of x, y, z, w, v
+typeof(x)
+typeof(y)
+typeof(z)
+typeof(w)
+typeof(v)
+```
+```{r}
+x <- 42
+y <- 42L
+z <- "42"
+w <- TRUE
+v <- 3 + 2i
+class (x)
+class(y)
+class(z)
+class(w)
+class(v)
+
+```
+```{r}
+x <- 42
+y <- 42L
+z <- "42"
+w <- TRUE
+v <- 3 + 2i
+mode (x)
+mode(y)
+mode(z)
+mode(w)
+mode(v)
+
+```
+```{r}
+x <- 42
+y <- 42L
+typeof(x)
+typeof(y)
+
+
+```
+the L in 42L forces it to integer
+
+Question #4: Is typeof() ever different from class() and from mode() for the same object? Look at your results above and explain any case where this happens (or, if you did not see one, explain what you would expect for a matrix or factor).
+Answer: Yes, typeof(), class(), and mode() can be completely different for the same object
+
+```{r}
+num_string <- "123"
+ as.numeric(num_string)
+typeof(123)
+class(123)
+mode(123)
+
+
+```
+```{r}
+logicalodd <- as.logical(0)
+logicaleven <- as.logical(1)
+print(logicalodd)
+print(logicaleven)
+```
+i get a false answer in zero and true in 1
+
+# TODO: Try converting bad_string to numeric using as.numeric()
+# Run this chunk and observe the warning message and the result
+```{r}
+bad_string <- "hello123"
+as.numeric(bad_string)
+```
+when i run this chunk it said a warning saying "NAs introduced by coercion"
+Question #5: When you ran the conversion-fail chunk, R produced NA and a warning instead of stopping with an error.
+
+Why do you think R is designed to give a warning here rather than crashing the whole script?
+(i think R is designed to give a warning because R is designed primiraly for data analysis)
+
+
+
+What are the risks of this behavior if you don’t read your warnings?
+(if you ignore the warnings, you may unknowingly perform analysis on a dataset that contains missing values(NA))
+
+
+
+Question #6: as.logical(0) and as.logical(1) convert to FALSE and TRUE.
+
+What do you think as.logical(2) and as.logical(-1)` will produce?
+(both will produce TRUE)
+
+
+```{r}
+logicalplus <- as.logical(2)
+logicalminus <- as.logical(-1)
+print(logicalplus)
+print(logicalminus)
+```
+
+Test it, then explain the rule R seems to be following.
+(when coercing numeric values to logical values in R exactly 0 coverts to false while any non zero numbers whether positive or negative converts to true)
+# TODO: Print first_name and last_name using print() and/or cat()
+```{r}
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+cat(first_name, last_name)
+```
+# TODO: Use paste() to combine first_name and last_name into a full name
+# TODO: Use paste0() to do the same, and compare the two results
+
+```{r}
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+paste(first_name, last_name) 
+paste0(first_name, last_name)
+```
+# TODO: Use paste() with the argument sep = "-" to join first_name and
+# last_name with a dash instead of a space
+```{r}
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+paste(first_name, last_name, sep = "-")
+
+```
+age <- 21
+# TODO: Use paste0() to build the sentence:
+# "Juan Dela Cruz is 21 years old." by combining full_name, age, and text
+
+```{r}
+age <- 21
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+full_name <- paste(first_name, last_name)
+paste0(full_name, " is ", age ," years old.")
+```
+Question #7: paste() and paste0() produced different results for the same two strings. Explain exactly why, referencing what each function does by default.
+
+(paste() and paste0() produce different results because they use different default separators (sep) to join strings.
+)
+
+
+
+Question #8: In the strings-numbers chunk, you combined a character string with a numeric variable (age) using paste0() without first converting age to a string.
+
+Did this cause an error? Explain what paste0() does internally to make this work, and how it relates to the type conversions you practiced in Part C.
+
+
+(No, combining a character string with a numeric variable using paste0() does not cause an error.)
+
+
+# TODO: Predict, then test: what is the result of "5" + 5 in R?
+# Run it and read the error message carefully.
+```{r}
+"5" + 5
+
+```
+# TODO: Now fix the code above so that "5" + 5 correctly evaluates to 10
+# using an appropriate conversion function.
+```{r}
+as.numeric("5") + 5
+```
+Question #9: Some programming languages automatically convert "5" + 5 into 10 without an error. R does not.
+
+Based on what you’ve learned about R’s data types in this lab, why do you think R requires an explicit conversion instead of guessing what the programmer meant?
+(R needs a conversion because "5" is text, not a number. Using as.numeric() changes it into a number so R can add it to 5.)
+
+
+
+Question #10: Suppose a classmate writes a script that reads a column of “numbers” from a text file. The column looks numeric, but when they try sum() on it, R throws an error. Based on everything in this lab (types, typeof()/class()/mode(), conversion, warnings), write a short paragraph explaining what likely went wrong and the steps you’d take to diagnose and fix it.
+
+(The numbers might have been read as text instead of numeric values. I would check the data type using class() and look at the values using head(). Then I would use as.numeric() to convert them into numbers. I would also check for errors or missing values before using sum() again.
+
+
+Conclusion
+In 3–4 sentences, summarize what you learned about how R handles different data types, and why understanding typeof()/class() and conversion functions matters before doing arithmetic or combining data.
+
+(I learned that R has different data types, such as numbers, characters, and logical values. The `typeof()` and `class()` functions help me check the type of data I am working with. I also learned that conversion functions like `as.numeric()` can change text into numbers when needed. Understanding data types helps avoid errors when doing calculations or combining data.)
+
+
+
+
+
+
+
+
+
+
+
+
