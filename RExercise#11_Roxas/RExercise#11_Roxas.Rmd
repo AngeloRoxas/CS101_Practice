@@ -1,0 +1,554 @@
+---
+title: "RExercise#11_Roxas"
+author: "Angelo M.Roxas"
+date: "2026-11-27"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+---
+title: "R Lab: Conditional Statements in R"
+author: "Angelo R. Roxas"
+date: "2026-11-27"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Part A — Examples of Conditional Statements
+A conditional statement lets R choose what to do based on whether a condition is TRUE or FALSE. Run each example, then change the values to see the output change.
+# Example A: if ... else  Choose between two outcomes for a single value.
+
+```{r}
+score <- 78
+
+if (score >= 75) {
+  print("Passed")
+} else {
+  print("Failed")
+}
+```
+
+Explanation: The output is "Passed" because the score is 78, which meets the required passing score of 75.
+
+Example B: if ... else if ... else. Use it when there are more than two outcomes. R checks from top to bottom and stops at the first condition that is TRUE.
+
+```{r}
+score <- 86
+
+if (score >= 90) {
+  print("Excellent")
+} else if (score >= 80) {
+  print("Good")
+} else if (score >= 75) {
+  print("Fair")
+} else {
+  print("Needs Improvement")
+}
+```
+
+Explanation: The output is "Good" since 86 is between 80 and 89. R checks the conditions from top to bottom.
+
+Example C: ifelse() for a whole vector. if works on one value at a time. ifelse() checks every element of a vector at once, which is what you need for a column of data.
+```{r}
+scores <- c(92, 68, 75, 81, 59)
+
+ifelse(scores >= 75, "Passed", "Failed")
+```
+
+The output shows that 92, 75, and 81 passed, while 68 and 59 failed. This is because ifelse() checks each score in the vector.
+
+Example D: combining conditions. Use & when both conditions must be true and | when at least one must be true.
+```{r}
+grade <- 91
+attendance <- 95
+
+if (grade >= 90 & attendance >= 90) {
+  print("Honors candidate")
+}
+```
+
+Explanation: Both conditions are TRUE because the grade is 91 and attendance is 95. That is why the program prints "Honors candidate".
+
+# Part B — Conditional Statements
+
+## Question #1
+
+Set temp <- 33. Print "Hot" if temp is 32 or higher, otherwise print "Not hot".
+
+```{r}
+temp <- 33
+
+if (temp >= 32) {
+  print("Hot")
+} else {
+  print("Not hot")
+}
+```
+
+Explanation: The output is "Hot" because the temperature is 33, which is higher than 32.
+
+# Question #2
+
+Set age <- 17. Use if ... else if ... else to print "Child" for ages below 13, "Teenager" for 13 to 19, and "Adult" for 20 and above.
+```{r}
+age <- 17
+
+if (age < 13) {
+  print("Child")
+} else if (age <= 19) {
+  print("Teenager")
+} else {
+  print("Adult")
+}
+```
+
+Explanation: The output is "Teenager" because the given age is 17, which belongs to the 13 to 19 age group.
+
+# Question #3
+
+Create marks <- c(45, 88, 73, 100, 62). Use ifelse() to create a vector result that says "Pass" for marks of 60 or higher and "Fail" otherwise. Print result.
+
+```{r}
+marks <- c(45, 88, 73, 100, 62)
+
+result <- ifelse(marks >= 60, "Pass", "Fail")
+
+print(result)
+```
+
+The output is:
+[1] "Fail" "Pass" "Pass" "Pass" "Pass"
+
+Explanation: Only 45 received a Fail because it is below 60. The other scores received Pass because they reached the passing mark.
+
+# Question #4
+Predict the output of the code below before you run it. Then run it and explain, in a comment, why you got that result.
+
+```{r}
+x <- 10
+
+if (x > 5) {
+  print("A")
+} else if (x > 8) {
+  print("B")
+} else {
+  print("C")
+}
+```
+
+Explanation: The output is "A" because 10 is already greater than 5. R stops checking the other conditions once the first TRUE condition is found.
+
+# Question #5
+
+What is the difference between if and ifelse()? When would you choose each one?
+
+if is used to check one condition at a time. ifelse() is used to check several values in a vector. I would use if for a single condition and ifelse() when working with multiple values or columns.
+
+Explanation: The main difference is that if is used for one condition, while ifelse() can check many values at once. I would use whichever is more suitable for the data.
+
+# Part C — Importing the CSV File
+Scenario. You are the data assistant of Mabini National High School. The registrar gave you students_grades.csv, which holds quiz, midterm, and final exam scores and attendance for 15 students. Your job is to compute each student’s final grade, decide who passed, assign grade remarks, flag students at risk, identify honors candidates, and send the cleaned results back to the registrar as CSV files.
+
+# Question #6
+
+# 1. Import the file safely.
+
+```{r}
+file_name <- "students_grades.csv"
+
+if (file.exists(file_name)) {
+  grades <- read.csv(file_name)
+  print("File imported successfully.")
+} else {
+  print("File not found.")
+}
+```
+
+Explanation: I used file.exists() first to make sure the CSV file is available before importing it. This prevents R from trying to read a file that does not exist.
+
+# 2. Inspect the data.
+
+```{r}
+# Display the first 6 rows.
+head(grades)
+# Display the number of rows and columns.
+dim(grades)
+# Check column names and data types.
+str(grades)
+# Display basic statistics.
+summary(grades)
+# Count missing values per column.
+colSums(is.na(grades))
+```
+
+The output shows the first six student records, the size of the dataset, and the types of data in each column. The summary also gives basic information about the scores and attendance.
+
+d. Answer the following questions.
+
+```{r}
+cat("The grades dataset has", nrow(grades),
+    "rows and", ncol(grades), "columns.\n")
+missing_values <- colSums(is.na(grades))
+
+cat("The column with missing values is",
+    names(missing_values)[missing_values > 0],
+    "with", sum(is.na(grades)),
+    "missing value.\n")
+cat("The data type of Section is",
+    class(grades$Section), ".\n")
+cat("The lowest attendance is",
+    min(grades$Attendance, na.rm = TRUE),
+    "and the highest attendance is",
+    max(grades$Attendance, na.rm = TRUE), ".\n")
+```
+
+Explanation: Based on the imported file, the dataset has 15 rows and 7 columns. The Midterm column contains 1 missing value, the Section column has a character data type, and the attendance ranges from 70 to 100.
+
+e. Check the data requirements.
+Check the grades should have 15 rows, 7 columns, and exactly one NA.
+
+```{r}
+stopifnot(nrow(grades) == 15)
+stopifnot(ncol(grades) == 7)
+stopifnot(sum(is.na(grades)) == 1)
+
+print("The dataset passed all checks.")
+```
+
+The output confirms that the dataset meets the required number of rows, columns, and missing values. No error appears because all three conditions are correct.
+
+# Applying Conditional Statements
+The registrar uses these rules. Each task adds a new column to grades.
+
+f.1 Compute the final grade.** Any arithmetic with NA gives NA, so the student with the missing midterm will have NA as a final grade. This is expected.
+
+```{r}
+grades$FinalGrade <- (grades$Quiz * 0.30) +
+                     (grades$Midterm * 0.30) +
+                     (grades$Final * 0.40)
+
+head(grades)
+```
+
+Explanation: I used the given percentages to calculate each student's final grade. The Quiz is 30%, the Midterm is 30%, and the Final exam is 40%. The student with the missing Midterm score also gets an NA final grade.
+
+f.2 Pass or fail.** Check for NA first, because NA >= 75 gives NA, not TRUE or FALSE.
+
+```{r}
+grades$Result <- ifelse(is.na(grades$FinalGrade),
+                        "Incomplete",
+                        ifelse(grades$FinalGrade >= 75,
+                               "Passed", "Failed"))
+
+grades[, c("Name", "FinalGrade", "Result")]
+```
+
+The output shows the result of each student based on their final grade.
+
+Explanation: Students with a grade of 75 or higher are marked Passed, while those below 75 are Failed. I checked for missing grades first so they would be marked Incomplete.
+
+f.3 Grade remarks.** Replace each ___ with the correct cutoff or label, then change eval=FALSE to eval=TRUE in the chunk header.
+
+```{r}
+grades$Remarks <- ifelse(is.na(grades$FinalGrade), "Incomplete",
+                  ifelse(grades$FinalGrade >= 90, "Excellent",
+                  ifelse(grades$FinalGrade >= 85, "Very Good",
+                  ifelse(grades$FinalGrade >= 80, "Good",
+                  ifelse(grades$FinalGrade >= 75, "Fair",
+                         "Needs Improvement")))))
+
+grades[, c("Name", "FinalGrade", "Remarks")]
+```
+
+Explanation: The remarks depend on the student's final grade. A grade of 90 or higher is Excellent, while lower grades receive the corresponding remarks. Missing grades are marked Incomplete.
+
+f.4 Attendance flag.** Write one ifelse() statement that creates a column AttendanceFlag with "At Risk" when Attendance is below 80 and "OK" otherwise.
+
+```{r}
+grades$AttendanceFlag <- ifelse(grades$Attendance < 80,
+                                "At Risk", "OK")
+
+grades[, c("Name", "Attendance", "AttendanceFlag")]
+```
+
+Based on the attendance values, students below 80 are marked At Risk. Students with attendance of 80 or higher are marked OK.
+
+f.5 Honors candidates.** Write one ifelse() statement that creates a column Honors with "Yes" or "No". Use & to require both a final grade of 90 or higher and attendance of 90 or higher. Students with a missing final grade must get "No". Hint: use !is.na(grades$FinalGrade) as the first condition.
+
+```{r}
+grades$Honors <- ifelse(
+  !is.na(grades$FinalGrade) &
+  grades$FinalGrade >= 90 &
+  grades$Attendance >= 90,
+  "Yes", "No"
+)
+
+grades[, c("Name", "FinalGrade", "Attendance", "Honors")]
+```
+
+Explanation: To qualify for honors, a student must have both a final grade of at least 90 and attendance of at least 90. I also included is.na() so students with missing grades will receive No.
+
+f.6 if ... else if inside a loop.** ifelse() works on a whole column, but a plain if handles one value at a time. To use if on a column you must loop over the rows.
+
+```{r}
+grades$Remarks <- character(nrow(grades))
+
+for (i in 1:nrow(grades)) {
+
+  if (is.na(grades$FinalGrade[i])) {
+    grades$Remarks[i] <- "Incomplete"
+  } else if (grades$FinalGrade[i] >= 90) {
+    grades$Remarks[i] <- "Excellent"
+  } else if (grades$FinalGrade[i] >= 85) {
+    grades$Remarks[i] <- "Very Good"
+  } else if (grades$FinalGrade[i] >= 80) {
+    grades$Remarks[i] <- "Good"
+  } else if (grades$FinalGrade[i] >= 75) {
+    grades$Remarks[i] <- "Fair"
+  } else {
+    grades$Remarks[i] <- "Needs Improvement"
+  }
+}
+
+grades[, c("Name", "FinalGrade", "Remarks")]
+```
+
+The output displays the remarks for every student.
+
+Explanation: I used a for loop so R could check each student's final grade one by one. The if and else if statements then assign the correct remark based on the score.
+
+f.7 Now try if (grades$FinalGrade >= 75) print("Passed") on its own in the Console. Explain the error or warning R gives and why the loop version avoids it.
+
+if (grades$FinalGrade >= 75) {
+  print("Passed")
+}
+
+
+Explanation: R gives a warning because the if statement expects only one TRUE or FALSE value, but FinalGrade contains multiple values. The loop in the previous task avoids this because it checks one student's grade at a time.
+
+f.8 Summarize your results.** Then write in comments how many students passed, how many are At Risk, and how many are honors candidates. Compare with a seatmate.
+
+```{r}
+passed_count <- sum(grades$Result == "Passed", na.rm = TRUE)
+risk_count <- sum(grades$AttendanceFlag == "At Risk",
+                  na.rm = TRUE)
+honors_count <- sum(grades$Honors == "Yes", na.rm = TRUE)
+cat("Students who passed:", passed_count, "\n")
+cat("Students who are at risk:", risk_count, "\n")
+cat("Honors candidates:", honors_count, "\n")
+```
+
+The results show that 10 students passed, 4 students are at risk, and 4 students are honors candidates. There are also 4 students who failed and 1 student with an incomplete grade.
+
+f.9 Check grades should now have 12 columns (7 original plus FinalGrade, Result, Remarks, AttendanceFlag, Honors).
+
+```{r}
+ncol(grades)
+```
+
+Explanation: The output is 12 because the original dataset has 7 columns and I added 5 new columns for the computed results.
+
+# Part D — Exporting Results to CSV
+
+The registrar needs three files: the full processed table, a list of at-risk students, and a list of honors candidates.
+
+Question #7
+
+Export the full processed table.** The argument row.names = FALSE stops R from adding an extra numbering column.
+
+```{r}
+write.csv(grades, "students_grades_processed.csv",
+          row.names = FALSE)
+
+print("Processed grades exported successfully.")
+```
+
+The processed data is now saved in students_grades_processed.csv.
+
+Explanation: I used row.names = FALSE so R would not add another column containing the row numbers.
+
+b. Export the at-risk students. The file is written only when there is at least one at-risk student.
+
+
+```{r}
+at_risk <- grades[grades$AttendanceFlag == "At Risk", ]
+
+if (nrow(at_risk) > 0) {
+  write.csv(at_risk, "at_risk_students.csv",
+            row.names = FALSE)
+  print("At-risk students exported successfully.")
+} else {
+  print("No students are at risk.")
+}
+```
+
+Explanation: I selected only students with an attendance flag of At Risk. The file will be exported if there is at least one student who meets the condition.
+
+c. Export the honors list.
+Create a data frame honors with only the rows where Honors is "Yes".
+Keep only these columns: StudentID, Name, Section, FinalGrade, Attendance. Hint: grades[rows_condition, c("StudentID", "Name")].
+Use an if ... else statement to export it as honors_list.csv, or print a message if the list is empty.
+
+```{r}
+honors <- grades[grades$Honors == "Yes",
+                 c("StudentID", "Name", "Section",
+                   "FinalGrade", "Attendance")]
+
+if (nrow(honors) > 0) {
+  write.csv(honors, "honors_list.csv",
+            row.names = FALSE)
+  print("Honors list exported successfully.")
+} else {
+  print("No honors candidates.")
+}
+```
+
+The honors list contains only qualified students and the required columns.
+
+Explanation: I used the Honors column to select students marked Yes. I also included only the five columns required by the instructions.
+
+d. Verify your exports. Never assume a file was written correctly. Read it back and compare.
+
+```{r}
+processed <- read.csv("students_grades_processed.csv")
+
+head(processed)
+dim(processed)
+
+if (file.exists("at_risk_students.csv")) {
+  at_risk_check <- read.csv("at_risk_students.csv")
+  print(at_risk_check)
+}
+
+if (file.exists("honors_list.csv")) {
+  honors_check <- read.csv("honors_list.csv")
+  print(honors_check)
+}
+```
+
+Explanation: I read the exported files again to check if they were saved properly. This also helps make sure that the records are still complete.
+
+Question #8
+
+How does the missing Midterm appear in the exported file? What would the file look like without row.names = FALSE?
+
+```{r}
+# Export a temporary file without row.names = FALSE.
+write.csv(grades, "temporary_file.csv")
+
+# Read the temporary file.
+temporary <- read.csv("temporary_file.csv")
+
+# Display the first rows.
+head(temporary)
+```
+
+Explanation: The missing Midterm appears as an empty cell in the CSV file. Without row.names = FALSE, R adds another column containing the row numbers. This is why I used row.names = FALSE in the other exports.
+
+Checkpoint. Your folder should now contain students_grades.csv plus students_grades_processed.csv, at_risk_students.csv, and honors_list.csv.
+
+# Question #9 — Scholarship
+a. Add a column Scholarship to grades using these rules, then export the qualified students.
+```{r}
+grades$Scholarship <- ifelse(is.na(grades$FinalGrade), "Pending",
+                      ifelse(grades$FinalGrade >= 95 & grades$Attendance >= 90, "Full",
+                      ifelse(grades$FinalGrade >= 85 & grades$Attendance >= 90, "Partial",
+                             "None")))
+
+qualified <- subset(grades, Scholarship == "Full" | Scholarship == "Partial")
+
+write.csv(qualified, "qualified_scholarship_students.csv", row.names = FALSE)
+```
+
+b. Use nested ifelse() statements. Test the missing grade first, then Full, then Partial
+
+```{r}
+grades$Scholarship <- ifelse(is.na(grades$FinalGrade), "Pending",
+                      ifelse(grades$FinalGrade >= 95 &
+                             grades$Attendance >= 90, "Full",
+                      ifelse(grades$FinalGrade >= 85 &
+                             grades$Attendance >= 90, "Partial",
+                             "None")))
+
+grades[, c("Name", "FinalGrade", "Attendance", "Scholarship")]
+```
+
+Explanation: I used nested ifelse() statements to assign the scholarship categories. Students with missing grades are Pending, those who meet the highest requirements get Full, and those who meet the next requirements get Partial. The rest receive None.
+
+c.Select students whose Scholarship is "Full" or "Partial". Hint: %in% c("Full", "Partial").
+
+```{r}
+scholarship <- grades[
+  grades$Scholarship %in% c("Full", "Partial"), ]
+
+scholarship
+```
+
+The output displays only students who qualified for Full or Partial scholarships.
+
+Explanation: I used %in% to select students who belong to either of the two scholarship categories.
+
+d. Export them to scholarship_candidates.csv with row.names = FALSE, using an if ... else guard.
+
+```{r}
+if (nrow(scholarship) > 0) {
+  write.csv(scholarship, "scholarship_candidates.csv",
+            row.names = FALSE)
+  print("Scholarship candidates exported successfully.")
+} else {
+  print("No scholarship candidates.")
+}
+```
+
+Explanation: The scholarship candidates are saved in scholarship_candidates.csv if there are qualified students. Otherwise, R prints a message saying there are no candidates.
+
+e. Print a count of each category with table().
+
+```{r}
+table(grades$Scholarship)
+```
+
+The output shows:
+
+- Full: 1
+- Partial: 4
+- Pending: 1
+- None: 9
+
+Explanation: There is 1 student with Full scholarship, 4 with Partial, 1 Pending, and 9 with None. The table() function counts how many students belong to each category.
+
+# Question #10
+
+1. Why did you check is.na() before comparing the final grade to a number?
+
+I checked is.na() first because some students have missing grades. This makes sure they are marked as Incomplete instead of getting an incorrect result.
+
+2. What would happen if the Failed condition were placed before the Incomplete condition?
+
+If Failed is checked before Incomplete, missing grades might not be classified correctly because comparisons with NA can also return NA.
+
+3. When is ifelse() the better choice than if ... else, and when is if ... else better?
+
+I would use ifelse() when checking many values in a vector. I would use if...else when checking one condition at a time.
+
+4. Why is it useful to read an exported CSV back into R?
+
+Reading the CSV again helps me check if the data was saved correctly and if the records are complete.
+
+
+#Final Check
+
+```{r}
+ncol(grades)
+table(grades$Scholarship)
+head(grades)
+```
+
+Explanation: The final dataset has 13 columns because the original 7 columns now have 6 additional columns. All the grades, results, remarks, attendance flags, honors, and scholarship categories are included.
